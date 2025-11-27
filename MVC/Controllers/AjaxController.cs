@@ -15,17 +15,22 @@ namespace MVC.Controllers
         [HttpGet]
         public string Greet(string Name)
         {
+            Thread.Sleep(3000);
             return $"Hello, {Name}!";
         }
         //POST: Ajax/PostGreet
         [HttpPost]
         public string PostGreet(string Name)
         {
+            Thread.Sleep(3000);
             return $"Hello, {Name}!";
         }
-        public IActionResult Index()
+        //POST: Ajax/CheckName
+        [HttpPost]
+        public string CheckName(string FirstName)
         {
-            return View();
+            bool Exists = _context.Customers.Any(e => e.ContactName == FirstName);
+            return Exists ? "true" : "false";
         }
     }
 }

@@ -1,0 +1,65 @@
+﻿<button id="getGreet" class="btn btn-primary">getGreet</button>
+<button id="postGreet" class="btn btn-primary">postGreet</button>
+<img id="progress" src="~/images/lightning.gif" style="display:none"/>
+<div id="result"></div>
+@section Scripts {
+    <script>
+        var baseAddrss="https://localhost:7015";  //Developing
+        //var baseAddrss="https://xxxxx";         //Staging
+        //var baseAddrss="https://yyyyy";         //Production:客戶、企業、雲端
+        $('#getGreet').on("click", async function(){
+            // alert("123");
+            var p=encodeURI("Name=老王")
+            $('#progress').show();
+            // fetch(`${baseAddrss}/Ajax/Greet?${p}`,{
+            // method:"GET",
+            // }).then(responsr=>{
+            // if(responsr.ok){
+            //     $('#progress').hide();
+            //     return responsr.text();
+            // }
+            // }).then(data=>{
+            //     $('#result').text(data);
+            // alert(data);
+            // }).catch(err=>{
+            //     $('#progress').hide();
+            // alert(err.message);
+            // });
+            try{
+                var response = await fetch(`${baseAddrss}/Ajax/Greet?${p}`,{
+                    method:"GET",
+                });
+                if(response.ok){
+                    $('#progress').hide();
+                    var data= await response.text();
+                    $('#result').text(data);
+                }
+            }
+            catch(err){
+                $('#progress').hide();
+                alert(err);
+            }
+        });
+        $('#postGreet').on("click", async ()=>{
+            
+            try{
+                var data =new FormData();
+                data.append("Name","老李");
+            $('#progress').show();
+                var response = await fetch(`${baseAddrss}/Ajax/PostGreet`,{
+                    method:"POST",
+                    body:data
+                });
+                if(response.ok){
+                    $('#progress').hide();
+                    var data= await response.text();
+                    $('#result').text(data);
+                }
+            }
+            catch(err){
+                $('#progress').hide();
+                alert(err);
+            }
+        });
+    </script>
+}
